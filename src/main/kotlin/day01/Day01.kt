@@ -6,7 +6,7 @@ import kotlin.math.abs
 fun main() {
     val testInput = readInput("main/kotlin/day01/testinput")
     val input = readInput("main/kotlin/day01/input")
-//    println("Part 1 Total distance: " + part1(toColumnLists(input)))
+    println("Part 1 Total distance: " + part1(toColumnLists(input)))
     println("Part 2 Total similarity score: " + part2(toColumnLists(input)))
 }
 

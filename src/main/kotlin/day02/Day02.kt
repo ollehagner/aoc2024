@@ -17,8 +17,7 @@ fun main() {
 fun part1(input: List<String>): Int {
     val levelsList = input.map { line -> line.split(" ").filter { it.isNotEmpty() }.map { it.toInt() } }
     return levelsList
-        .map { toDeltaList(it) }
-        .filter { hasValidDistance(it) && hasOneDirection(it) }
+        .filter { isSafe(it) }
         .count()
 
 }
@@ -29,16 +28,23 @@ fun part2(input: List<String>): Int {
 
     return levelsList
         .filter { levels: List<Int> ->
-            subLevels(levels)
-                .any { hasValidDistance(it) && hasOneDirection(it) }
+            levels.indices.any { index ->
+                val subList = removeIndexed(levels, index)
+                isSafe(subList)
+            }
         }
         .count()
+}
+
+fun isSafe(list: List<Int>): Boolean {
+    val delta = toDeltaList(list)
+    return hasValidDistance(delta) && hasOneDirection(delta)
 }
 
 fun hasValidDistance(levels: List<Int>): Boolean {
     return levels
         .map { abs(it) }
-        .all { it <= 3 && it >= 1 }
+        .all { it >= 1 && it <= 3 }
 }
 
 fun hasOneDirection(levels: List<Int>): Boolean {
@@ -47,11 +53,8 @@ fun hasOneDirection(levels: List<Int>): Boolean {
 
 fun toDeltaList(values: List<Int>): List<Int> = values.windowed(2).map { (a, b) -> a - b }
 
-fun subLevels(levels: List<Int>): List<List<Int>> {
-    return IntRange(0, levels.size - 1)
-        .map { index ->
-            val subList = levels.toMutableList()
-            subList.removeAt(index)
-            toDeltaList(subList)
-        }
+fun removeIndexed(list: List<Int>, index: Int): List<Int> {
+    val subList = list.toMutableList()
+    subList.removeAt(index)
+    return subList
 }
