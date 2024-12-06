@@ -9,7 +9,7 @@ fun main() {
     println("Part2 Sum of ordered unordered updates: ${part2(input)}")
 }
 
-fun part1(input: List<String>): Int {
+private fun part1(input: List<String>): Int {
     val rules = parseRules(input)
     val updates = parseUpdates(input)
 
@@ -19,7 +19,7 @@ fun part1(input: List<String>): Int {
         .sum()
 }
 
-fun part2(input: List<String>): Int {
+private fun part2(input: List<String>): Int {
     val rules = parseRules(input)
     val updates = parseUpdates(input)
 
@@ -30,7 +30,7 @@ fun part2(input: List<String>): Int {
         .sum()
 }
 
-fun inOrder(update: List<Int>, rules: Map<Int, Set<Int>>): Boolean {
+private fun inOrder(update: List<Int>, rules: Map<Int, Set<Int>>): Boolean {
     val handled = mutableSetOf<Int>()
     return update
         .all { pageNumber ->
@@ -39,7 +39,7 @@ fun inOrder(update: List<Int>, rules: Map<Int, Set<Int>>): Boolean {
         }
 }
 
-fun order(update: List<Int>, rules: Map<Int, Set<Int>>): List<Int> {
+private fun order(update: List<Int>, rules: Map<Int, Set<Int>>): List<Int> {
     if(update.size == 1) return update
     val next = update
         .filter { pageNumber ->
@@ -49,13 +49,13 @@ fun order(update: List<Int>, rules: Map<Int, Set<Int>>): List<Int> {
     return listOf(next) + order(update - next, rules.filterKeys { it != next }.toMap())
 }
 
-fun parseUpdates(input: List<String>) : List<List<Int>> {
+private fun parseUpdates(input: List<String>) : List<List<Int>> {
     return input
         .dropWhile { it.contains("|") || it.isEmpty() }
         .map { line -> line.split(",").map { it.toInt() } }
 }
 
-fun parseRules(input: List<String>) : Map<Int, Set<Int>> {
+private fun parseRules(input: List<String>) : Map<Int, Set<Int>> {
     return input
         .takeWhile { !it.isEmpty() }
         .map { line -> line.substringBefore("|").toInt() to line.substringAfter("|").toInt() }
