@@ -11,6 +11,7 @@ val directions = mapOf(
 )
 const val OBSTACLE = '#'
 const val FLOOR = '.'
+const val START = '^'
 
 fun main() {
     val testinput = readInput("main/kotlin/day06/testinput")
@@ -22,7 +23,7 @@ fun main() {
 
 private fun part1(grid: Grid<Char>): Int {
     val start = grid.entries()
-        .first { it.value == '^' }
+        .first { it.value == START }
     var position = start.key
     var direction: Direction = directions[start.value]!!
     val visited = mutableSetOf(position)
@@ -40,35 +41,33 @@ private fun part1(grid: Grid<Char>): Int {
 
 private fun part2(grid: Grid<Char>): Int {
     val start = grid.entries()
-        .first { it.value == '^' }
+        .first { it.value == START }
     var position = start.key
     var direction: Direction = directions[start.value]!!
     val startingState = State(position, direction)
     return grid.entries()
         .filter { it.value == FLOOR }
-        .count { (point, _) -> isLoop(addObstacle(grid, point), startingState) }
+        .count { (point, _) -> isLoop(addObstacleToGrid(grid, point), startingState) }
 }
 
 private fun isLoop(grid: Grid<Char>, start: State): Boolean {
     var position = start.position
     var direction = start.direction
     val visited = mutableSetOf(State(position, direction))
-    while(grid.hasValue(position.move(direction))) {
+
+    while(grid.hasValue(position.move(direction)) && !(visited.contains(State(position.move(direction), direction)))) {
         val nextPosition = position.move(direction)
         if(grid.valueOf(nextPosition) == OBSTACLE) {
             direction = direction.rotateRight()
         } else {
             position = nextPosition
         }
-        if(visited.contains(State(position, direction))) {
-            return true
-        }
         visited.add(State(position, direction))
     }
-    return false
+    return grid.hasValue(position.move(direction))
 }
 
-private fun addObstacle(grid: Grid<Char>, point: Point): Grid<Char> {
+private fun addObstacleToGrid(grid: Grid<Char>, point: Point): Grid<Char> {
     val copy = grid.entries()
     .filter { it.key != point }
     .map { it.key to it.value }
