@@ -44,16 +44,17 @@ fun findAllInLine(start: Point, vector: Point, grid: Grid<Char>): Sequence<Point
 fun findNodePairs(grid: Grid<Char>) : List<Pair<Point, Point>> {
     return grid.entries()
         .filter { (_, value) -> value != EMPTY }
-        .groupBy { it.value }
-        .filter { it.value.size > 1 }
-        .mapValues { nodes ->
-            nodes.value
-                .flatMap { (first, _) ->
-                    nodes.value
-                        .filter { it.key != first }
-                        .map { (second, _) ->
-                            first to second
+        .groupBy( {it.value}, { it.key } )
+        .values
+        .filter { it.size > 1 }
+        .map { nodes ->
+            nodes
+                .flatMap { source ->
+                    nodes
+                        .filter { it != source }
+                        .map { destination ->
+                            source to destination
                         }
                 }
-        }.values.flatten()
+        }.flatten()
 }
