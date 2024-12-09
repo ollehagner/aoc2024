@@ -28,16 +28,15 @@ fun part2(grid: Grid<Char>): Int {
     val nodePairs = findNodePairs(grid)
     return (nodePairs
         .flatMap {
-            findAllInLine(it.first, it.first - it.second, grid).toList()
+            findAllInLine(it.first, it.first - it.second, grid)
+                .takeWhile { grid.hasValue(it) }
         }
         .toSet() + nodePairs.map { it.first }.toSet()).count()
 }
 
-fun findAllInLine(start: Point, vector: Point, grid: Grid<Char>): Sequence<Point> = sequence {
-    var current = start
-    while(grid.hasValue(current.move(vector))) {
-        current = current.move(vector)
-        yield(current)
+fun findAllInLine(start: Point, vector: Point, grid: Grid<Char>): Sequence<Point> {
+    return generateSequence(start) {
+        it.move(vector)
     }
 }
 
