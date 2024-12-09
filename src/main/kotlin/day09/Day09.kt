@@ -56,9 +56,9 @@ fun part2(diskData: List<Block>): Long {
 
     (reversed)
         .fold(copy) { blockList, blockToCheck ->
-            val firstFreeIndex = freeSpaceIndex(blockList, blockToCheck)
-            if (firstFreeIndex.isPresent) {
-                val newIndex = firstFreeIndex.get()
+            freeSpaceIndex(blockList, blockToCheck)
+                .ifPresent { firstFreeIndex ->
+                val newIndex = firstFreeIndex
                 val oldIndex = blockList.indexOf(blockToCheck)
                 blockList.removeAt(oldIndex)
                 blockList.add(oldIndex, EmptyBlock(blockToCheck.size()))
