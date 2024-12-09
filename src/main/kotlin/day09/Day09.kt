@@ -47,7 +47,6 @@ fun part1(diskData: List<Block>): Long {
             } else acc
         }
         .second
-    return 1
 }
 
 fun part2(diskData: List<Block>): Long {
