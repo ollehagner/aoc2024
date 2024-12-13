@@ -107,7 +107,7 @@ fun toPlot(position: Point, grid: Grid<Char>): Plot? {
 
 data class Plot(val type: Char, val position: Point, val edges: List<Edge>)
 
-data class Edge(val direction: Direction) 
+data class Edge(val direction: Direction)
 
 data class Side(val xValues: IntRange, val yValues: IntRange, val direction: Direction) {
     fun merge(other: Side): Side {
