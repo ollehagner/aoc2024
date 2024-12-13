@@ -2,6 +2,7 @@ package day08
 
 import common.Grid
 import common.Point
+import common.infiniteSequence
 import common.readInput
 
 fun main() {

@@ -80,15 +80,5 @@ private fun parseToGrid(input: List<String>): Grid<Char> {
     return Grid(input.reversed().map { row -> row.toCharArray().toList() })
 }
 
-fun Direction.rotateRight(): Direction {
-    return when(this) {
-        RIGHT -> DOWN
-        DOWN -> LEFT
-        LEFT -> UP
-        UP -> RIGHT
-        else -> throw IllegalStateException("Unknown direction")
-    }
-}
-
 private data class State(val position: Point, val direction: Direction)
 
