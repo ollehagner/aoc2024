@@ -40,19 +40,17 @@ fun part2(input: List<Point>, endPoints: Pair<Point, Point>): Point {
 fun solve(grid: Grid<Char>, endPoints: Pair<Point, Point>): Int {
     val start = endPoints.first
     val goal = endPoints.second
-    val queue = PriorityQueue<Pair<Point, Int>>(compareBy { (position, pathSoFar) -> pathSoFar + position.manhattanDistance(goal) })
+    val queue = mutableListOf<Pair<Point, Int>>()
     val seen = mutableSetOf<Point>()
     queue.add(Pair(start, 0))
-    val startTime = System.nanoTime()
     while (queue.isNotEmpty()) {
-        val current = queue.poll()
+        val current = queue.removeFirst()
         if(current.first == goal) {
-            println("Solved in ${TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startTime)} ms")
             return current.second
         }
         current.first.cardinalNeighbors()
             .filter { it !in seen }
-            .filter { grid.withinBounds(it) && grid.valueOrDefault(it, '.') != '#' }
+            .filter { it.x in 0..goal.x && it.y in 0..goal.y && grid.valueOrDefault(it, '.') != '#' }
             .map { it to current.second + 1 }
             .forEach {
                 seen.add(it.first)
