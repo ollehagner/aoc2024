@@ -3,8 +3,6 @@ package day18
 import common.Grid
 import common.Point
 import common.readInput
-import java.util.PriorityQueue
-import java.util.concurrent.TimeUnit
 
 fun main() {
     val testinput = readInput("main/kotlin/day18/testinput").map { it.toPoint() }
